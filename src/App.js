@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+// import { Query, withApollo } from "react-apollo";
+// import gql from "graphql-tag";
+import { TextField, Button, Card, CardContent } from '@material-ui/core';
+import { GET_USERS } from './actions/index';
+import { connect } from 'react-redux';
 class App extends Component {
+  componentDidMount() {
+    this.props.getUsers();
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Card>
+        <CardContent>
+          <TextField id="username" label="User Name" />
+          <TextField id="password" label="Password" />
+          <Button variant="contained" >
+            Submit
+        </Button>
+        </CardContent>
+      </Card>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  newState: state.users
+})
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUsers: () => {
+      dispatch({ type: GET_USERS })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
